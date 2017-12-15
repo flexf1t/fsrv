@@ -1,0 +1,15 @@
+srv/srv/x64/
+srv/srv/Win32/
+srv/srv/Debug/
+srv/srv/GeneratedFiles/
+srv/srv/srv.vcxproj.user
+srv_net/srv_net/x64/
+srv_net/srv_net/Win32/
+srv_net/srv_net/Debug/
+srv_net/srv_net/GeneratedFiles/
+srv_net/srv_net/srv_net.vcxproj.user
+example/example/x64/
+example/example/Win32/
+example/example/Debug/
+example/example/GeneratedFiles/
+example/example/example.vcxproj.user

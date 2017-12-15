@@ -1,0 +1,294 @@
+#====================================================================
+# Общие настройки проекта под платформу
+#====================================================================
+#====================================================================
+# section
+#====================================================================
+
+
+# platform Astra MCBC Red_Hat CentOS Windows Elbrus_OS
+PLATFORM=Astra
+
+# platform version
+# for Astra:  1_1 1_2 1_3
+# for MCBC: _ 5
+# for Red_Hat: 5_5x64
+# for CentOS: 6
+# for Windows: MinGW
+# for Elbrus_OS: elbrus sparc
+#PLATFORM_VERSION=1_3
+
+# Qt major version
+# 3 4
+#QT_MAJOR_VERSION=4
+
+
+ifndef PLATFORM
+${error not defined PLATFORM}
+endif
+
+
+ifndef PLATFORM_VERSION
+
+ifeq (${PLATFORM},Astra)
+PLATFORM_VERSION=1_3
+endif
+
+ifeq (${PLATFORM},MCBC)
+PLATFORM_VERSION=5
+endif
+
+ifeq (${PLATFORM},Red_Hat)
+PLATFORM_VERSION=5_5x64
+endif
+
+ifeq (${PLATFORM},CentOS)
+PLATFORM_VERSION=6
+endif
+
+ifeq (${PLATFORM},Windows)
+PLATFORM_VERSION=MinGW
+endif
+
+ifeq (${PLATFORM},Elbrus_OS)
+PLATFORM_VERSION=elbrus
+endif
+
+
+endif #ifndef PLATFORM_VERSION
+
+ifndef QT_MAJOR_VERSION
+
+ifeq (${PLATFORM},MCBC)
+ifeq (${PLATFORM_VERSION},_)
+QT_MAJOR_VERSION=3
+endif
+else
+QT_MAJOR_VERSION=4
+endif #ifeq (${PLATFORM},MCBC)
+
+endif
+
+
+FULL_PLATFORM_NAME=${PLATFORM}_${PLATFORM_VERSION}_QT_${QT_MAJOR_VERSION}
+
+
+
+# path to X11 headers
+ifneq (${PLATFORM},Windows)
+INC_X11_DEFAULT=/usr/include/X11
+else
+INC_X11_DEFAULT=
+endif
+# Astra linux X11 include dir 
+INC_X11_Astra_1_1=/usr/include/X11
+INC_X11_Astra_1_2=${INC_X11_Astra_1_1}
+INC_X11_Astra_1_3=${INC_X11_Astra_1_1}
+# MCBC X11 include dir
+INC_X11_MCBC__=/usr/X11R6/include/X11
+INC_X11_MCBC_5=${INC_X11_MCBC__}
+
+ifndef INC_X11
+
+ifdef INC_X11_${PLATFORM}_${PLATFORM_VERSION}
+INC_X11=${INC_X11_${PLATFORM}_${PLATFORM_VERSION}}
+else
+INC_X11=${INC_X11_DEFAULT}
+endif # ifdef INC_X11_${PLATFORM}_${PLATFORM_VERSION}
+
+endif # INC_X11
+
+
+# path to X11 libs
+LIB_X11_DEFAULT=/usr/lib/X11
+# Astra linux X11 lib dir LIB_X11=/usr/lib/X11
+LIB_X11_Astra_1_1=/usr/lib/X11
+LIB_X11_Astra_1_2=${LIB_X11_Astra_1_1}
+LIB_X11_Astra_1_3=${LIB_X11_Astra_1_1}
+# MCBC X11 lib dir LIB_X11=/usr/X11R6/lib
+LIB_X11_MCBC__=/usr/X11R6/lib
+LIB_X11_MCBC_5=${LIB_X11_MCBC__}
+
+ifndef LIB_X11
+
+ifdef LIB_X11_${PLATFORM}_${PLATFORM_VERSION}
+LIB_X11=${LIB_X11_${PLATFORM}_${PLATFORM_VERSION}}
+else
+LIB_X11=${LIB_X11_DEFAULT}
+endif # ifdef LIB_X11_${PLATFORM}_${PLATFORM_VERSION}
+
+endif # ifndef LIB_X11
+
+
+# -DQT_VER compiler option
+QT_VER_DEFAULT_QT_3=-DQT_3
+QT_VER_DEFAULT_QT_4=-DQT_4
+# Astra Linux QT4 version QT_VER=-DQT_4_6_3
+QT_VER_Astra_1_1_QT_4=-DQT_4_6_3
+QT_VER_Astra_1_2_QT_4=-DQT_4_6_3
+QT_VER_Astra_1_3_QT_4=-DQT_4_6_3
+# Astra Linux QT3 version QT_VER=-DQT_3_3_8
+QT_VER_Astra_1_1_QT_3=-DQT_3_3_8
+QT_VER_Astra_1_2_QT_3=-DQT_3_3_8
+QT_VER_Astra_1_3_QT_3=-DQT_3_3_8
+# MCBC QT version QT_VER=-DQT_3_3_3
+QT_VER_MCBC___QT_3=-DQT_3_3_3
+QT_VER_MCBC_5_QT_4=-DQT_4
+# Red Hat 5.5x64 QT4 version QT_VER=-DQT_4_6_4
+QT_VER_Red_Hat_5_5x64_QT_4=-DQT_4_6_4
+# MinGW QT_VER=-DQT_4
+QT_VER_Windows_MinGW_QT_4=-DQT_4
+
+# Elbrus_OS QT4 version
+QT_VER_Elbrus_OS_elbrus_QT_4=-DQT_4_8_4
+QT_VER_Elbrus_OS_sparc_QT_4=-DQT_4_8_7
+
+ifndef QT_VER
+
+ifdef QT_VER_${FULL_PLATFORM_NAME}
+QT_VER=${QT_VER_${FULL_PLATFORM_NAME}}
+else
+QT_VER=${QT_VER_DEFAULT_QT_${QT_MAJOR_VERSION}}
+endif # ifdef QT_VER_${FULL_PLATFORM_NAME}
+
+endif # ifndef QT_VER
+
+
+
+# path to Qt directory
+# Astra Linux QT4 path QTDIR=/usr/share/qt4
+QTDIR_Astra_1_1_QT_4=/usr/share/qt4
+QTDIR_Astra_1_2_QT_4=${QTDIR_Astra_1_1_QT_4}
+QTDIR_Astra_1_3_QT_4=${QTDIR_Astra_1_1_QT_4}
+# Astra Linux QT3 path QTDIR=/usr/share/qt3
+QTDIR_Astra_1_1_QT_3=-DQT_3_3_8
+QTDIR_Astra_1_2_QT_3=${QTDIR_Astra_1_1_QT_3}
+QTDIR_Astra_1_3_QT_3=${QTDIR_Astra_1_1_QT_3}
+# MCBC QT path QTDIR=/usr/lib/qt-3.3.3
+QTDIR_MCBC___QT_3=/usr/lib/qt-3.3.3
+# MCBC5 QT path QTDIR=/usr/lib64/qt46
+QTDIR_MCBC_5_QT_4=/usr/lib64/qt46
+# Red Hat 5.5x64 QT4 path QTDIR=/usr/local/Trolltech/Qt-4.6.4
+QTDIR_Red_Hat_5_5x64_QT_4=/usr/local/Trolltech/Qt-4.6.4
+# Red Hat/CentOS 6: QTDIR=/usr/lib64/qt4
+QTDIR_CentOS_6_QT_4=/usr/lib64/qt4
+# MinGW QT path QTDIR=d:\qt\4.8.5_32_g++_4.8.1
+# QT_DIR_Windows_MinGW_QT_4=`printenv MINGW_QTDIR`
+QTDIR_Windows_MinGW_QT_4=d:\qt\4.8.5_32_g++_4.8.1
+
+# Elbrus_OS
+QTDIR_Elbrus_OS_elbrus_QT_4=/opt/qt4
+QTDIR_Elbrus_OS_sparc_QT_4=/opt/qt4
+
+#ifndef QTDIR
+
+ifdef QTDIR_${FULL_PLATFORM_NAME}
+QTDIR=${QTDIR_${FULL_PLATFORM_NAME}}
+else
+${error QTDIR is not defined}
+endif # ifdef QTDIR_${FULL_PLATFORM_NAME}
+
+#endif # ifndef QTDIR
+# Qt library path
+LIB_QT_DEFAULT=${QTDIR}/lib
+#  Astra Linux QT3 library path LIB_QT=$(QTDIR)/lib
+LIB_QT_Astra_1_1_QT_3=${QTDIR}/lib
+LIB_QT_Astra_1_2_QT_3=${LIB_QT_Astra_1_1_QT_3}
+LIB_QT_Astra_1_3_QT_3=${LIB_QT_Astra_1_1_QT_3}
+#  Astra Linux QT4 library path LIB_QT=/usr/lib
+LIB_QT_Astra_1_1_QT_4=/usr/lib
+LIB_QT_Astra_1_2_QT_4=${LIB_QT_Astra_1_1_QT_4}
+LIB_QT_Astra_1_3_QT_4=${LIB_QT_Astra_1_1_QT_4}
+#  Red Hat 5.5x64 QT4 library path LIB_QT=$(QTDIR)/lib
+LIB_QT_Red_Hat_5_5x64_QT_4=$(QTDIR)/lib
+#  MCBC5 QT4 library path LIB_QT=$(QTDIR)/lib64
+LIB_QT_MCBC_5_QT_4=$(QTDIR)/lib64
+#  Red Hat/CentOS 6: LIB_QT=/usr/lib64
+LIB_QT_CentOS_6_QT_4=/usr/lib64
+#  MinGW QT4 library path LIB_QT=$(QTDIR)\bin
+LIB_QT_Windows_MinGW_QT_4=$(QTDIR)\bin
+
+ifndef LIB_QT
+
+ifdef LIB_QT_${FULL_PLATFORM_NAME}
+LIB_QT=${LIB_QT_${FULL_PLATFORM_NAME}}
+else
+LIB_QT=${LIB_QT_DEFAULT}
+endif # ifdef LIB_QT_${FULL_PLATFORM_NAME}
+
+endif # ifndef LIB_QT
+
+
+
+# Qt include directory
+INC_QT_DEFAULT=${QTDIR}/include
+#  Red Hat/CentOS 6: INC_QT=/usr/include
+INC_QT_Red_Hat_5_5x64_QT_4=/usr/include
+INC_QT_CentOS_6_QT_4=/usr/include
+
+ifndef INC_QT
+
+ifdef INC_QT_${FULL_PLATFORM_NAME}
+INC_QT=${INC_QT_${FULL_PLATFORM_NAME}}
+else
+INC_QT=${INC_QT_DEFAULT}
+endif # ifdef INC_QT_${FULL_PLATFORM_NAME}
+
+endif # ifndef INC_QT
+
+# include dirs for moc compiler
+_I_INC_QT= -I$(INC_QT)/QtCore -I$(INC_QT)/Qt -I$(INC_QT)/QtGui -I$(INC_QT)/QtHelp -I$(INC_QT)/QtXml -I$(INC_QT)/QtSql -I$(INC_QT)/QtNetwork #these include paths for qt 4 
+
+
+# moc command
+#  Astra Linux QT3 moc command line MOC=$(QTDIR)/bin/moc
+MOC_QT_3=${QTDIR}/bin/moc
+#  Astra Linux QT4 moc command line MOC=$(QTDIR)/bin/moc $(DEFS) $(INC) $(_I_INC_QT)
+#  Red Hat 5.5x64 QT4 moc command line MOC=$(QTDIR)/bin/moc $(DEFS) $(INC) $(_I_INC_QT)
+MOC_QT_4=${QTDIR}/bin/moc $(DEFS) $(INC) $(_I_INC_QT)
+
+ifndef MOC
+MOC=${MOC_QT_${QT_MAJOR_VERSION}}
+endif # ifndef MOC
+
+#  Astra Linux QT3 uic command line UIC=$(QTDIR)/bin/uic
+#  Astra Linux QT4 uic command line UIC=$(QTDIR)/bin/uic
+#  Red Hat 5.5x64 QT4 uic command line UIC=$(QTDIR)/bin/uic
+UIC=$(QTDIR)/bin/uic
+
+# qmake command
+#  Astra Linux QT4 qmake command line QMAKE_4=$(QTDIR)/bin/qmake
+#  Red Hat 5.5x64 QT4 qmake command line QMAKE_4=$(QTDIR)/bin/qmake
+QMAKE_4=${QTDIR}/bin/qmake
+
+
+#====================================================================
+
+ifeq (${PLATFORM},Windows)
+MINGW_COMPILER=1
+COMMON_COMPILER_OPTIONS=-ggdb -D__MINGW32__
+DOT_SO=.dll
+DOT_EXE=.exe
+SUFFIX_QT=4
+LIBS_X11=
+else
+COMMON_COMPILER_OPTIONS=-O1
+DOT_SO=.so
+DOT_EXE=
+SUFFIX_QT=
+LIBS_X11= -lX11 -lXext
+
+ifeq (${PLATFORM},Elbrus_OS)
+ifeq (${PLATFORM_VERSION},sparc)
+COMMON_COMPILER_OPTIONS=-ggdb -O0 -D_DGT_BIG_ENDIAN -DSPARC64
+endif #(${PLATFORM_VERSION},sparc)
+endif #(${PLATFORM},Elbrus_OS)
+
+endif # ifeq (${PLATFORM},Windows)
+
+QT_LINKER_OPTIONS=-Wl,--rpath,$(LIB_QT),--verbose
+
+
+
+
+# EOF
